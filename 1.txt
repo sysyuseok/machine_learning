@@ -1,0 +1,15 @@
+activate.bat 으로 base환경 구축
+터미널에서 기본 프로필 명령 프롬프트로 변환
+테마는 적절히 원하는 것으로 변환
+python및 언어 확장 install
+indent colorizer
+
+header 에는 본인정보 - window or android같은 os부터 검색 엔진까지
+body에는 요청정보 - 어떤 정보를 얻을 것인지
+
+
+요청line, header, body가 있고 응답도 동일하게 응답line, header, body가 있다.
+header는 web browser의 정보(window or android같은 os부터 검색 엔진까지 포함)
+
+서로의 상태를 알려주는 것이 header
+body는 내용 - 요청 parameter /응답에서는 html과 같이 정보가 들어옴

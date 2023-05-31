@@ -1,0 +1,15 @@
+#entryContent > div > div.col-xs-12.col-sm-8.col-md-content-with-right.left-content > div:nth-child(4) > div:nth-child(1) > div > div > div
+#hi_1__1 > div.SENSE-BODY > div.dflex.no-grow > div.SENSE-CONTENT
+#entryContent > div > div.col-xs-12.col-sm-8.col-md-content-with-right.left-content > div:nth-child(4) > div.HEAD-INFO > div.HEAD-INFO2 > div.smallprint.margin-top-2em
+
+
+
+session - 사용권한? 자격? 
+
+
+#rso > div:nth-child(1) > div > div > div.Z26q7c.UK95Uc.jGGQ5e > div > a > h3
+#rso > div:nth-child(2) > div > div > div.Z26q7c.UK95Uc.jGGQ5e > div > a > h3
+#rso > div:nth-child(5) > div > div > div.Z26q7c.UK95Uc.jGGQ5e > div > a > h3
+#rso > div:nth-child(6) > div > div > div.Z26q7c.UK95Uc.jGGQ5e > div > a > h3
+#rso > div:nth-child(7) > div > div > div > div.Z26q7c.UK95Uc.jGGQ5e > div > a > h3
+#rso > div:nth-child(9) > div > div > div > div.Z26q7c.UK95Uc.jGGQ5e > div > a > h3

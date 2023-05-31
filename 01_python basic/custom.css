@@ -1,0 +1,64 @@
+/*This file contains any manual css for this page that needs to override the global styles.
+This is only required when different pages style the same element differently. This is just
+a hack to deal with our current css styles and no new styling should be added in this file.*/
+/*전체 배경색*/
+/* 
+저장 위치 사용자 home디렉토리/.jupyter/custom 폴더
+ex) C:\Users\Playdata\.jupyter\custom
+
+custom 폴더는 없으면 만들어야 한다.
+변경후 새로고침
+
+*/
+/*소스코드 설정*/
+.CodeMirror-code {
+    font-family: Consolas; 
+    font-size: 18pt; 
+    line-height: 130%;
+	padding:0;
+} 
+/*결과 창 설정*/
+.output pre {
+    font-family:Consolas;
+    font-size:17pt;
+    line-height:130%;
+}    
+/*마크다운*/  
+.text_cell_render,.rendered_html{
+	font-family:Consolas;
+    font-size:17pt;
+    line-height:170%;
+}
+.rendered_html h3, .rendered_html h2 {
+	line-height:170%;
+}
+/*툴바 삭제
+div#maintoolbar {
+    display: none !important;
+}
+*/
+/*키워드 색 변경*/
+.cm-s-ipython span.cm-keyword  {
+       color:#9112b9
+}
+/*property, 함수명 색 변경*/
+.cm-property {
+    color:blue;
+}
+
+/* 컨테이너 너비 조정 */
+.container {
+	width:95%;
+}
+/* 내장함수 색 변경 */
+.cm-s-ipython span.cm-builtin {
+	color:#0000FF;
+	font-weight:bold;
+}
+
+/*마크다운,dataframe output 테이블*/
+.rendered_html table{
+    font-size:17pt; 
+}
+
+
