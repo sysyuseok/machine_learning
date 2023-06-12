@@ -18,7 +18,7 @@ def test_multi_classification(dataloader, model, loss_fn, device="cpu") -> tuple
     """
     model.eval() # 모델을 평가모드로 변환
     size = len(dataloader.dataset) # 전체 데이터수
-    num_batches = len(dataloader)  #  step 수 
+    num_batches = len(dataloader)  #  step 수
     
     test_loss, test_accuracy = 0., 0.
     
@@ -81,7 +81,6 @@ def train(dataloader, model, loss_fn, optimizer, device="cpu", mode:"binary or m
         tuple: 학습후 계산한 Train set에 대한  train_loss, train_accuracy
     """
     model.train()
-    # size = len(dataloader.dataset) #총 데이터수
 
     for X, y in dataloader:
         X, y = X.to(device), y.to(device)
@@ -93,15 +92,20 @@ def train(dataloader, model, loss_fn, optimizer, device="cpu", mode:"binary or m
         loss.backward()
         optimizer.step()
         
-    if mode == 'binary':  # 이진분류이면...
+    if mode == 'binary':
         train_loss, train_accuracy = test_binary_classification(dataloader, model, loss_fn, device)
-    else:  # 다중분류이면...
+    else:
         train_loss, train_accuracy = test_multi_classification(dataloader, model, loss_fn, device)
     return train_loss, train_accuracy
 
 
 
-def fit(train_loader, val_loader, model, loss_fn, optimizer, epochs, save_best_model=True, save_model_path=None, early_stopping=True, patience=10, device='cpu',  mode:"binary or multi"='binary'):
+def fit(train_loader, val_loader, model, loss_fn, optimizer, epochs, 
+        save_best_model=True, save_model_path=None, 
+        early_stopping=True, patience=10, 
+        device='cpu',  mode:"binary or multi"='binary',
+        lr_schedule=None
+       ):
     """
     모델을 학습시키는 함수
 
@@ -118,6 +122,7 @@ def fit(train_loader, val_loader, model, loss_fn, optimizer, epochs, save_best_m
         patience (int, optional): 조기종료 True일 때 종료전에 성능이 개선될지 몇 epoch까지 기다릴지 epoch수. Defaults to 10.
         device (str, optional): device. Defaults to 'cpu'.
         mode(str, optinal): 분류 종류. "binary(default) or multi
+        lr_schedule: Learning Scheduler 객체. 한 epoch이 끝날 때 학습률 조정.(None이 아닐때)
     [return]
         tuple: 에폭 별 성능 리스트. (train_loss_list, train_accuracy_list, validation_loss_list, validataion_accuracy_list)
     """
@@ -142,13 +147,20 @@ def fit(train_loader, val_loader, model, loss_fn, optimizer, epochs, save_best_m
     model = model.to(device)
     s = time.time()
     for epoch in range(epochs):
-        train_loss, train_accuracy = train(train_loader, model, loss_fn, optimizer, device=device, mode=mode)
+        ### 학습
+        train_loss, train_accuracy = train(train_loader, model, loss_fn, optimizer, 
+                                           device=device, mode=mode)
         
-        if mode == "binary":  # 이진분류이면...
+        # 학습률 조정
+        if lr_schedule:
+            lr_schedule.step()
+            
+        ### 검증
+        if mode == "binary":
             val_loss, val_accuracy = test_binary_classification(val_loader, model, loss_fn, device=device)
-        else:  # 다중분류이면...
+        else:
             val_loss, val_accuracy = test_multi_classification(val_loader, model, loss_fn, device=device)
-        
+
         train_loss_list.append(train_loss)
         train_accuracy_list.append(train_accuracy)
         val_loss_list.append(val_loss)
@@ -159,14 +171,14 @@ def fit(train_loader, val_loader, model, loss_fn, optimizer, epochs, save_best_m
         
         # 모델 저장
         if save_best_model:
-            if val_loss < best_score_save:  # 성능개선
+            if val_loss < best_score_save: # 성능개선
                 torch.save(model, save_model_path)
                 print(f"저장: {epoch+1} - 이전 : {best_score_save}, 현재: {val_loss}")
                 best_score_save = val_loss
         
         # early stopping 처리            
         if early_stopping:
-            if val_loss < best_score_es:  # 성능개선
+            if val_loss < best_score_es: # 성능개선
                 best_score_es = val_loss  
                 trigger_count = 0
                                 
@@ -175,9 +187,6 @@ def fit(train_loader, val_loader, model, loss_fn, optimizer, epochs, save_best_m
                 if patience == trigger_count:
                     print(f"Early stopping: Epoch - {epoch}")
                     break
-                    
-        # save_best_model과 early_stopping이 둘 다 True일 경우, 맨 위에 있는 save_best_model가 먼저 실행되기에...
-        # best_score_save와 best_score_es 따로 분리해서 val_loss값을 저장한다.
             
     e = time.time()
     print(e-s, "초")
